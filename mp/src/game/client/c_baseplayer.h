@@ -441,6 +441,11 @@ public:
 	float			m_flConstraintWidth;
 	float			m_flConstraintSpeedFactor;
 
+	int GetConsumable( int i )
+	{
+		return consumables[i];
+	}
+
 protected:
 
 	void				CalcPlayerView( Vector& eyeOrigin, QAngle& eyeAngles, float& fov );
@@ -485,6 +490,8 @@ protected:
 	bool			m_IsFootprintOnLeft;
 
 private:
+	int consumables[3];
+
 	// Make sure no one calls this...
 	C_BasePlayer& operator=( const C_BasePlayer& src );
 	C_BasePlayer( const C_BasePlayer & ); // not defined, not accessible
