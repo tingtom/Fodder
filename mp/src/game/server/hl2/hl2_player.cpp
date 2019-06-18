@@ -1049,15 +1049,12 @@ void CHL2_Player::PlayerRunCommand(CUserCmd *ucmd, IMoveHelper *moveHelper)
 //-----------------------------------------------------------------------------
 void CHL2_Player::Spawn(void)
 {
-
-#ifndef HL2MP
-#ifndef PORTAL
 	SetModel( "models/player.mdl" );
-#endif
-#endif
-
 	BaseClass::Spawn();
+	Equip();
 
+	m_iMaxHealth = 10000;
+	m_iHealth = 100;
 	//
 	// Our player movement speed is set once here. This will override the cl_xxxx
 	// cvars unless they are set to be lower than this.
