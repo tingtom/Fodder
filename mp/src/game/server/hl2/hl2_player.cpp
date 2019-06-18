@@ -47,6 +47,7 @@
 #include "filters.h"
 #include "tier0/icommandline.h"
 #include "ammodef.h"
+#include "fodder_world.h"
 
 #ifdef HL2_EPISODIC
 #include "npc_alyx_episodic.h"
@@ -1051,6 +1052,9 @@ void CHL2_Player::Spawn(void)
 
 	m_iMaxHealth = 10000;
 	m_iHealth = 100;
+
+	CFodderWorld::GetCFodderWorld()->Load();
+
 	//
 	// Our player movement speed is set once here. This will override the cl_xxxx
 	// cvars unless they are set to be lower than this.

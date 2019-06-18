@@ -17,6 +17,8 @@
 #ifdef CLIENT_DLL
 	#define CHalfLife2 C_HalfLife2
 	#define CHalfLife2Proxy C_HalfLife2Proxy
+#else
+	#include "fodder_world.h"
 #endif
 
 
@@ -45,6 +47,7 @@ public:
 	virtual float			GetAutoAimScale( CBasePlayer *pPlayer );
 	virtual float			GetAmmoQuantityScale( int iAmmoIndex );
 	virtual void			LevelInitPreEntity();
+	virtual void			LevelInitPostEntity();
 #endif
 
 private:
@@ -66,6 +69,7 @@ private:
 
 	virtual bool			ClientCommand( CBaseEntity *pEdict, const CCommand &args );
 	virtual void			PlayerSpawn( CBasePlayer *pPlayer );
+	CBaseEntity*			GetPlayerSpawnSpot( CBasePlayer *pPlayer );
 
 	virtual void			InitDefaultAIRelationships( void );
 	virtual const char*		AIClassText(int classType);
@@ -89,7 +93,6 @@ public:
 	virtual bool IsAlyxInDarknessMode();
 
 private:
-
 	float	m_flLastHealthDropTime;
 	float	m_flLastGrenadeDropTime;
 
@@ -97,6 +100,7 @@ private:
 	float AdjustPlayerDamageInflicted( float damage );
 
 	int						DefaultFOV( void ) { return 75; }
+	bool sent;
 #endif
 };
 

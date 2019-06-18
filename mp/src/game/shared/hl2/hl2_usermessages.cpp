@@ -32,7 +32,7 @@ void RegisterUserMessages( void )
 	usermessages->Register( "Fade", 10 );
 	usermessages->Register( "VGUIMenu", -1 );	// Show VGUI menu
 	usermessages->Register( "Rumble", 3 );	// Send a rumble to a controller
-	usermessages->Register( "Battery", 2 );
+	//usermessages->Register( "Battery", 2 );
 	usermessages->Register( "Damage", 18 );		// BUG: floats are sent for coords, no variable bitfields in hud & fixed size Msg
 	usermessages->Register( "VoiceMask", VOICE_MAX_PLAYERS_DW*4 * 2 + 1 );
 	usermessages->Register( "RequestState", 0 );
@@ -45,6 +45,7 @@ void RegisterUserMessages( void )
 	usermessages->Register( "LogoTimeMsg", 4 );
 	usermessages->Register( "AchievementEvent", -1 );
 	usermessages->Register( "UpdateJalopyRadar", -1 );
+	usermessages->Register( "FloorData", 2 );
 
 #ifndef _X360
 	// NVNT register haptic user messages

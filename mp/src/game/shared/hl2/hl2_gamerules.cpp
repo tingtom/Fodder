@@ -223,10 +223,11 @@ ConVar  alyx_darkness_force( "alyx_darkness_force", "0", FCVAR_CHEAT | FCVAR_REP
 	//-----------------------------------------------------------------------------
 	CHalfLife2::CHalfLife2()
 	{
-		m_bMegaPhysgun = false;
-		
+		m_bMegaPhysgun = sent = false;
 		m_flLastHealthDropTime = 0.0f;
 		m_flLastGrenadeDropTime = 0.0f;
+
+		CFodderWorld::InitCFodderWorld( 5 );
 	}
 
 	//-----------------------------------------------------------------------------
@@ -247,12 +248,46 @@ ConVar  alyx_darkness_force( "alyx_darkness_force", "0", FCVAR_CHEAT | FCVAR_REP
 
 		return false;
 	}
+	
+	//
+	//	Generate the world after entitys have been inited
+	//
+	void CHalfLife2::LevelInitPostEntity()
+	{
+		if( !CFodderWorld::GetCFodderWorld()->GetRooms() )
+		{
+			 Msg( "FodderWorld: No rooms found" );
+			 return;
+		}
+
+		BaseClass::LevelInitPostEntity();
+	}
+
+	CBaseEntity *CHalfLife2::GetPlayerSpawnSpot( CBasePlayer *pPlayer )
+	{
+		CFodderRoom *pSpawnSpot = CFodderWorld::GetCFodderWorld()->GetSpawn();
+		
+		if( pSpawnSpot )
+		{
+			pSpawnSpot->PlayerEntered();
+			pPlayer->SetLocalOrigin( pSpawnSpot->GetAbsOrigin() + Vector(0,0,1) );
+			pPlayer->SetAbsVelocity( vec3_origin );
+			pPlayer->SetLocalAngles( pSpawnSpot->GetLocalAngles() );
+			pPlayer->m_Local.m_vecPunchAngle = vec3_angle;
+			pPlayer->m_Local.m_vecPunchAngleVel = vec3_angle;
+			pPlayer->SnapEyeAngles( pSpawnSpot->GetLocalAngles() );
+			return pSpawnSpot;
+		}
+
+		return BaseClass::GetPlayerSpawnSpot( pPlayer );
+	}
 
 	//-----------------------------------------------------------------------------
 	// Purpose: Player has just spawned. Equip them.
 	//-----------------------------------------------------------------------------
 	void CHalfLife2::PlayerSpawn( CBasePlayer *pPlayer )
 	{
+		
 	}
 
 	//-----------------------------------------------------------------------------
@@ -1295,6 +1330,11 @@ ConVar  alyx_darkness_force( "alyx_darkness_force", "0", FCVAR_CHEAT | FCVAR_REP
 
 	void CHalfLife2::PlayerThink( CBasePlayer *pPlayer )
 	{
+		if( (pPlayer->IsAlive() || pPlayer->IsConnected()) && !sent )
+		{
+			CFodderWorld::GetCFodderWorld()->SendFloorData();
+			sent = true;
+		}
 	}
 
 	void CHalfLife2::Think( void )
