@@ -438,17 +438,9 @@ int CBaseCombatWeapon::GetWeaponFlags( void ) const
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-int CBaseCombatWeapon::GetSlot( void ) const
+int CBaseCombatWeapon::GetCategory( void ) const
 {
-	return GetWpnData().iSlot;
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-int CBaseCombatWeapon::GetPosition( void ) const
-{
-	return GetWpnData().iPosition;
+	return GetWpnData().category;
 }
 
 //-----------------------------------------------------------------------------

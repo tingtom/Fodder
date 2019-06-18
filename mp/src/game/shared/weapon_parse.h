@@ -85,8 +85,7 @@ public:
 	char					szViewModel[MAX_WEAPON_STRING];			// View model of this weapon
 	char					szWorldModel[MAX_WEAPON_STRING];		// Model of this weapon seen carried by the player
 	char					szAnimationPrefix[MAX_WEAPON_PREFIX];	// Prefix of the animations that should be used by the player carrying this weapon
-	int						iSlot;									// inventory slot.
-	int						iPosition;								// position in the inventory slot.
+
 	int						iMaxClip1;								// max primary clip size (-1 if no clip)
 	int						iMaxClip2;								// max secondary clip size (-1 if no clip)
 	int						iDefaultClip1;							// amount of primary ammo in the gun when it's created
@@ -98,6 +97,8 @@ public:
 	int						iFlags;									// miscellaneous weapon flags
 	char					szAmmo1[MAX_WEAPON_AMMO_NAME];			// "primary" ammo type
 	char					szAmmo2[MAX_WEAPON_AMMO_NAME];			// "secondary" ammo type
+
+	int category;
 
 	// Sound blocks
 	char					aShootSounds[NUM_SHOOT_SOUND_TYPES][MAX_WEAPON_STRING];	

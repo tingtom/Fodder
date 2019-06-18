@@ -7311,7 +7311,7 @@ void CBasePlayer::Weapon_DropSlot( int weaponSlot )
 		if ( pWeapon != NULL )
 		{
 			// If the slots match, it's already occupied
-			if ( pWeapon->GetSlot() == weaponSlot )
+			if ( pWeapon->GetCategory() == weaponSlot )
 			{
 				Weapon_Drop( pWeapon, NULL, NULL );
 			}

@@ -2062,14 +2062,7 @@ void CBaseCombatCharacter::SetLightingOriginRelative( CBaseEntity *pLightingOrig
 void CBaseCombatCharacter::Weapon_Equip( CBaseCombatWeapon *pWeapon )
 {
 	// Add the weapon to my weapon inventory
-	for (int i=0;i<MAX_WEAPONS;i++) 
-	{
-		if (!m_hMyWeapons[i]) 
-		{
-			m_hMyWeapons.Set( i, pWeapon );
-			break;
-		}
-	}
+	m_hMyWeapons.Set( pWeapon->GetCategory(), pWeapon );
 
 	// Weapon is now on my team
 	pWeapon->ChangeTeam( GetTeamNumber() );
@@ -2215,7 +2208,7 @@ bool CBaseCombatCharacter::Weapon_SlotOccupied( CBaseCombatWeapon *pWeapon )
 		return false;
 
 	//Check to see if there's a resident weapon already in this slot
-	if ( Weapon_GetSlot( pWeapon->GetSlot() ) == NULL )
+	if ( Weapon_GetSlot( pWeapon->GetCategory() ) == NULL )
 		return false;
 
 	return true;
@@ -2235,7 +2228,7 @@ CBaseCombatWeapon *CBaseCombatCharacter::Weapon_GetSlot( int slot ) const
 		if ( m_hMyWeapons[i].Get() != NULL )
 		{
 			// If the slots match, it's already occupied
-			if ( m_hMyWeapons[i]->GetSlot() == targetSlot )
+			if ( m_hMyWeapons[i]->GetCategory() == targetSlot )
 				return m_hMyWeapons[i];
 		}
 	}

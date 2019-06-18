@@ -349,8 +349,6 @@ public:
 	virtual bool			AllowsAutoSwitchTo( void ) const;
 	virtual bool			AllowsAutoSwitchFrom( void ) const;
 	virtual int				GetWeaponFlags( void ) const;
-	virtual int				GetSlot( void ) const;
-	virtual int				GetPosition( void ) const;
 	virtual char const		*GetName( void ) const;
 	virtual char const		*GetPrintName( void ) const;
 	virtual char const		*GetShootSound( int iIndex ) const;
@@ -358,6 +356,8 @@ public:
 	virtual bool			UsesClipsForAmmo1( void ) const;
 	virtual bool			UsesClipsForAmmo2( void ) const;
 	bool					IsMeleeWeapon() const;
+
+	virtual int				GetCategory() const;
 
 	// derive this function if you mod uses encrypted weapon info files
 	virtual const unsigned char *GetEncryptionKey( void );
