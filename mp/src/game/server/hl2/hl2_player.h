@@ -255,10 +255,8 @@ public:
 	virtual void		ExitLadder();
 	virtual surfacedata_t *GetLadderSurface( const Vector &origin );
 
-	virtual void EquipSuit( bool bPlayEffects = true );
+	virtual void EquipSuit();
 	virtual void RemoveSuit( void );
-	void  HandleAdmireGlovesAnimation( void );
-	void  StartAdmireGlovesAnimation( void );
 	
 	void  HandleSpeedChanges( void );
 
@@ -286,7 +284,6 @@ public:
 
 protected:
 	virtual void		PreThink( void );
-	virtual	void		PostThink( void );
 	virtual bool		HandleInteraction(int interactionType, void *data, CBaseCombatCharacter* sourceEnt);
 
 	virtual void		UpdateWeaponPosture( void );

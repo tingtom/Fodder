@@ -458,17 +458,12 @@ void CHL2_Player::CheckSuitZoom( void )
 //#endif//_XBOX
 }
 
-void CHL2_Player::EquipSuit( bool bPlayEffects )
+void CHL2_Player::EquipSuit()
 {
 	MDLCACHE_CRITICAL_SECTION();
 	BaseClass::EquipSuit();
 	
 	m_HL2Local.m_bDisplayReticle = true;
-
-	if ( bPlayEffects == true )
-	{
-		StartAdmireGlovesAnimation();
-	}
 }
 
 void CHL2_Player::RemoveSuit( void )
@@ -892,60 +887,6 @@ void CHL2_Player::PreThink(void)
 			m_nButtons &= ~(IN_ATTACK|IN_ATTACK2);
 		}
 	}
-}
-
-void CHL2_Player::PostThink( void )
-{
-	BaseClass::PostThink();
-
-	if ( !g_fGameOver && !IsPlayerLockedInPlace() && IsAlive() )
-	{
-		 HandleAdmireGlovesAnimation();
-	}
-}
-
-void CHL2_Player::StartAdmireGlovesAnimation( void )
-{
-	MDLCACHE_CRITICAL_SECTION();
-	CBaseViewModel *vm = GetViewModel( 0 );
-
-	if ( vm && !GetActiveWeapon() )
-	{
-		vm->SetWeaponModel( "models/weapons/v_hands.mdl", NULL );
-		ShowViewModel( true );
-						
-		int	idealSequence = vm->SelectWeightedSequence( ACT_VM_IDLE );
-		
-		if ( idealSequence >= 0 )
-		{
-			vm->SendViewModelMatchingSequence( idealSequence );
-			m_flAdmireGlovesAnimTime = gpGlobals->curtime + vm->SequenceDuration( idealSequence ); 
-		}
-	}
-}
-
-void CHL2_Player::HandleAdmireGlovesAnimation( void )
-{
-	CBaseViewModel *pVM = GetViewModel();
-
-	if ( pVM && pVM->GetOwningWeapon() == NULL )
-	{
-		if ( m_flAdmireGlovesAnimTime != 0.0 )
-		{
-			if ( m_flAdmireGlovesAnimTime > gpGlobals->curtime )
-			{
-				pVM->m_flPlaybackRate = 1.0f;
-				pVM->StudioFrameAdvance( );
-			}
-			else if ( m_flAdmireGlovesAnimTime < gpGlobals->curtime )
-			{
-				m_flAdmireGlovesAnimTime = 0.0f;
-				pVM->SetWeaponModel( NULL, NULL );
-			}
-		}
-	}
-	else
-		m_flAdmireGlovesAnimTime = 0.0f;
 }
 
 #define HL2PLAYER_RELOADGAME_ATTACK_DELAY 1.0f
