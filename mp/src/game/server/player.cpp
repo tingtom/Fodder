@@ -5976,45 +5976,6 @@ void CBasePlayer::ImpulseCommands( )
 	m_nImpulse = 0;
 }
 
-#ifdef HL2_EPISODIC
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-static void CreateJalopy( CBasePlayer *pPlayer )
-{
-	// Cheat to create a jeep in front of the player
-	Vector vecForward;
-	AngleVectors( pPlayer->EyeAngles(), &vecForward );
-	CBaseEntity *pJeep = (CBaseEntity *)CreateEntityByName( "prop_vehicle_jeep" );
-	if ( pJeep )
-	{
-		Vector vecOrigin = pPlayer->GetAbsOrigin() + vecForward * 256 + Vector(0,0,64);
-		QAngle vecAngles( 0, pPlayer->GetAbsAngles().y - 90, 0 );
-		pJeep->SetAbsOrigin( vecOrigin );
-		pJeep->SetAbsAngles( vecAngles );
-		pJeep->KeyValue( "model", "models/vehicle.mdl" );
-		pJeep->KeyValue( "solid", "6" );
-		pJeep->KeyValue( "targetname", "jeep" );
-		pJeep->KeyValue( "vehiclescript", "scripts/vehicles/jalopy.txt" );
-		DispatchSpawn( pJeep );
-		pJeep->Activate();
-		pJeep->Teleport( &vecOrigin, &vecAngles, NULL );
-	}
-}
-
-void CC_CH_CreateJalopy( void )
-{
-	CBasePlayer *pPlayer = UTIL_GetCommandClient();
-	if ( !pPlayer )
-		return;
-	CreateJalopy( pPlayer );
-}
-
-static ConCommand ch_createjalopy("ch_createjalopy", CC_CH_CreateJalopy, "Spawn jalopy in front of the player.", FCVAR_CHEAT);
-
-#endif // HL2_EPISODIC
-
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
@@ -6163,8 +6124,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 	case 101:
 		gEvilImpulse101 = true;
 
-		EquipSuit();
-
 		// Give the player everything!
 		GiveAmmo( 255,	"Pistol");
 		GiveAmmo( 255,	"AR2");
@@ -6176,9 +6135,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		GiveAmmo( 5,	"grenade");
 		GiveAmmo( 32,	"357" );
 		GiveAmmo( 16,	"XBowBolt" );
-#ifdef HL2_EPISODIC
-		GiveAmmo( 5,	"Hopwire" );
-#endif		
+
 		GiveNamedItem( "weapon_smg1" );
 		GiveNamedItem( "weapon_frag" );
 		GiveNamedItem( "weapon_crowbar" );
@@ -6186,13 +6143,10 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		GiveNamedItem( "weapon_ar2" );
 		GiveNamedItem( "weapon_shotgun" );
 		GiveNamedItem( "weapon_physcannon" );
-		GiveNamedItem( "weapon_bugbait" );
 		GiveNamedItem( "weapon_rpg" );
 		GiveNamedItem( "weapon_357" );
 		GiveNamedItem( "weapon_crossbow" );
-#ifdef HL2_EPISODIC
-		// GiveNamedItem( "weapon_magnade" );
-#endif
+
 		if ( GetHealth() < 100 )
 		{
 			TakeHealth( 25, DMG_GENERIC );
