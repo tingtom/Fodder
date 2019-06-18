@@ -233,6 +233,7 @@ void CWeaponPistol::PrimaryAttack( void )
 		m_nNumShotsFired++;
 	}
 
+	this->m_iClip1++;
 	m_flLastAttackTime = gpGlobals->curtime;
 	m_flSoonestPrimaryAttack = gpGlobals->curtime + PISTOL_FASTEST_REFIRE_TIME;
 	CSoundEnt::InsertSound( SOUND_COMBAT, GetAbsOrigin(), SOUNDENT_VOLUME_PISTOL, 0.2, GetOwner() );
