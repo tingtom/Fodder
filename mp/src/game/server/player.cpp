@@ -6092,6 +6092,28 @@ void CC_CH_CreateAirboat( void )
 
 static ConCommand ch_createairboat( "ch_createairboat", CC_CH_CreateAirboat, "Spawn airboat in front of the player.", FCVAR_CHEAT );
 
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CC_LINV( void )
+{
+	CBasePlayer *pPlayer = UTIL_GetCommandClient();
+	if ( !pPlayer )
+		return;
+
+	if( pPlayer->GetActiveWeapon()->GetCategory() == 0 )
+	{
+		CBaseCombatWeapon *wep = pPlayer->GetWeapon( 1 );
+		if( wep )
+			pPlayer->Weapon_Switch( wep );
+	}else{
+		CBaseCombatWeapon *wep = pPlayer->GetWeapon( 0 );
+		if( wep )
+			pPlayer->Weapon_Switch( wep );
+	}
+}
+
+static ConCommand lastinv( "lastinv", CC_LINV, "Swap between primary and secondary weapon.", FCVAR_CHEAT );
 
 //=========================================================
 //=========================================================
