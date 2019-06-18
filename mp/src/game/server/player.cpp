@@ -6659,17 +6659,13 @@ bool CBasePlayer::BumpWeapon( CBaseCombatWeapon *pWeapon )
 				UTIL_HudHintText( this, hint.Access() );
 			}
 
-			// Always switch to a newly-picked up weapon
-			if ( !PlayerHasMegaPhysCannon() )
+			// If it uses clips, load it full. (this is the first time you've picked up this type of weapon)
+			if ( pWeapon->UsesClipsForAmmo1() )
 			{
-				// If it uses clips, load it full. (this is the first time you've picked up this type of weapon)
-				if ( pWeapon->UsesClipsForAmmo1() )
-				{
-					pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
-				}
-
-				Weapon_Switch( pWeapon );
+				pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
 			}
+
+			Weapon_Switch( pWeapon );
 #endif
 		}
 		return true;
@@ -7359,11 +7355,11 @@ void CBasePlayer::Weapon_Equip( CBaseCombatWeapon *pWeapon )
 	bool bShouldSwitch = g_pGameRules->FShouldSwitchWeapon( this, pWeapon );
 
 #ifdef HL2_DLL
-	if ( bShouldSwitch == false && PhysCannonGetHeldEntity( GetActiveWeapon() ) == pWeapon && 
+	/*if ( bShouldSwitch == false && PhysCannonGetHeldEntity( GetActiveWeapon() ) == pWeapon && 
 		 Weapon_OwnsThisType( pWeapon->GetClassname(), pWeapon->GetSubType()) )
 	{
 		bShouldSwitch = true;
-	}
+	}*/
 #endif//HL2_DLL
 
 	// should we switch to this item?

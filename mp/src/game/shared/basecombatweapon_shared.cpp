@@ -268,7 +268,7 @@ void CBaseCombatWeapon::Precache( void )
 
 		}
 #if defined( CLIENT_DLL )
-		gWR.LoadWeaponSprites( GetWeaponFileInfoHandle() );
+		//gWR.LoadWeaponSprites( GetWeaponFileInfoHandle() );
 #endif
 		// Precache models (preload to avoid hitch)
 		m_iViewModelIndex = 0;
