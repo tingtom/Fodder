@@ -1576,15 +1576,17 @@ static float DamageForce( const Vector &size, float damage )
 	return force;
 }
 
-
 const impactdamagetable_t &CBasePlayer::GetPhysicsImpactDamageTable()
 {
 	return gDefaultPlayerImpactDamageTable;
 }
 
-
 int CBasePlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 {
+	//Fodder flinch
+	this->ViewPunch( QAngle( -5, 0, 0 ) );
+	flinchTime = gpGlobals->curtime + 1.8f;
+
 	// set damage type sustained
 	m_bitsDamageType |= info.GetDamageType();
 
@@ -4495,6 +4497,12 @@ void CBasePlayer::ForceOrigin( const Vector &vecOrigin )
 //-----------------------------------------------------------------------------
 void CBasePlayer::PostThink()
 {
+	//Still flinching
+	if( flinchTime > gpGlobals->curtime )
+	{
+		m_nButtons &= ~(IN_ATTACK|IN_ATTACK2);
+	}
+
 	m_vecSmoothedVelocity = m_vecSmoothedVelocity * SMOOTHING_FACTOR + GetAbsVelocity() * ( 1 - SMOOTHING_FACTOR );
 
 	if ( !g_fGameOver && !m_iPlayerLocked )
