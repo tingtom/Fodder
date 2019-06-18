@@ -822,7 +822,7 @@ void CBaseCombatWeapon::DefaultTouch( CBaseEntity *pOther )
 #endif
 
 	// Can't pick up dissolving weapons
-	if ( IsDissolving() )
+	/*if ( IsDissolving() )
 		return;
 
 	// if it's not a player, ignore
@@ -846,8 +846,7 @@ void CBaseCombatWeapon::DefaultTouch( CBaseEntity *pOther )
 	if (pPlayer->BumpWeapon(this))
 	{
 		OnPickedUp( pPlayer );
-	}
-#endif
+	}*/
 }
 
 //---------------------------------------------------------
