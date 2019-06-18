@@ -1675,35 +1675,6 @@ void CPropAirboat::FireGun( )
 		vecEyePosition = vecGunPosition;
 		vecEyeDirection = vecRay;
 	}
-
-	CAPCMissile *pEnt = FindAPCMissileInCone( vecEyePosition, vecEyeDirection, 2.5f );
-	if ( pEnt && (pEnt->GetHealth() > 0) )
-	{
-		CTakeDamageInfo info( this, this, 1, DMG_AIRBOAT );
-		CalculateBulletDamageForce( &info, ammoType, vecRay, pEnt->WorldSpaceCenter() );
-		pEnt->TakeDamage( info );
-
-		Vector vecVelocity = pEnt->GetAbsVelocity();
-
-		// Pick a vector perpendicular to the vecRay which will push it away from the airboat
-		Vector vecPerp;
-		CrossProduct( Vector( 0, 0, 1 ), vecRay, vecPerp );
-		vecPerp.z = 0.0f;
-		if ( VectorNormalize( vecPerp ) > 1e-3 )
-		{
-			Vector vecCurrentDir;
-			GetVectors( &vecCurrentDir, NULL, NULL );
-			if ( DotProduct( vecPerp, vecCurrentDir ) > 0.0f )
-			{
-				vecPerp *= -1.0f;
-			}
-
-			vecPerp *= random->RandomFloat( 15, 25 );
-			vecVelocity += vecPerp;
-			pEnt->SetAbsVelocity( vecVelocity );
-//			pEnt->DisableGuiding();
-		}
-	}
 }
 
 

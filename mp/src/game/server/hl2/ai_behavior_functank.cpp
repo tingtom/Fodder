@@ -124,7 +124,7 @@ int	CAI_FuncTankBehavior::SelectSchedule()
 		if ( HasCondition( COND_NEW_ENEMY ) && GetEnemy()->IsPlayer() && !m_bSpottedPlayerOutOfCover )
 		{
 			m_bSpottedPlayerOutOfCover = true;
-			m_hFuncTank->NPC_JustSawPlayer( GetEnemy() );
+			//m_hFuncTank->NPC_JustSawPlayer( GetEnemy() );
 		}
 
 		// Fire at the enemy.
@@ -166,11 +166,11 @@ void CAI_FuncTankBehavior::Dismount( void )
 	{
 		GetOuter()->SpeakSentence( FUNCTANK_SENTENCE_DISMOUNTING );
 
-		Assert( m_hFuncTank->IsMarkedForDeletion() || m_hFuncTank->GetController() == GetOuter() );
+		//Assert( m_hFuncTank->IsMarkedForDeletion() || m_hFuncTank->GetController() == GetOuter() );
 		
-		m_hFuncTank->NPC_SetInRoute( false );
-		if ( m_hFuncTank->GetController() == GetOuter() )
-			m_hFuncTank->StopControl();
+		//m_hFuncTank->NPC_SetInRoute( false );
+		//if ( m_hFuncTank->GetController() == GetOuter() )
+		//	m_hFuncTank->StopControl();
 		SetFuncTank( NULL );
 	}
 
@@ -204,7 +204,7 @@ int CAI_FuncTankBehavior::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 
 	if ( m_hFuncTank && bValidDismountAttacker == true )
 	{
-		if ( !m_hFuncTank->IsEntityInViewCone( pAttacker ) )
+		//if ( !m_hFuncTank->IsEntityInViewCone( pAttacker ) )
 		{
 			SetCondition( COND_FUNCTANK_DISMOUNT );
 		}
@@ -239,7 +239,7 @@ void CAI_FuncTankBehavior::StartTask( const Task_t *pTask )
 			}
 
 			Vector vecManPos;
-			m_hFuncTank->NPC_FindManPoint( vecManPos );
+			//m_hFuncTank->NPC_FindManPoint( vecManPos );
 			AI_NavGoal_t goal( vecManPos );
 			goal.pTarget = m_hFuncTank;
 			if ( GetNavigator()->SetGoal( goal ) )
@@ -266,14 +266,14 @@ void CAI_FuncTankBehavior::StartTask( const Task_t *pTask )
 			
 			// Ensure we've reached the func_tank
 			Vector vecManPos;
-			m_hFuncTank->NPC_FindManPoint( vecManPos );
+			//m_hFuncTank->NPC_FindManPoint( vecManPos );
 
 			// More leniency in Z.
 			Vector vecDelta = (vecManPos - GetAbsOrigin());
 			if ( fabs(vecDelta.x) > 16 || fabs(vecDelta.y) > 16 || fabs(vecDelta.z) > 48 )
 			{
 				TaskFail( "Not correctly on func_tank man point" );
-				m_hFuncTank->NPC_InterruptRoute();
+				//m_hFuncTank->NPC_InterruptRoute();
 				return;
 			}
 
@@ -295,7 +295,7 @@ void CAI_FuncTankBehavior::StartTask( const Task_t *pTask )
 				GetOuter()->SpeakSentence( FUNCTANK_SENTENCE_JUST_MOUNTED );
 
 				// We are at the correct position and facing for the func_tank, mount it.
-				m_hFuncTank->StartControl( GetOuter() );
+				//m_hFuncTank->StartControl( GetOuter() );
 				GetOuter()->ClearEnemyMemory();
 				m_bMounted = true;
 				TaskComplete();
@@ -426,7 +426,7 @@ void CAI_FuncTankBehavior::RunTask( const Task_t *pTask )
 				GetOuter()->SpeakSentence( FUNCTANK_SENTENCE_JUST_MOUNTED );
 
 				// We are at the correct position and facing for the func_tank, mount it.
-				m_hFuncTank->StartControl( GetOuter() );
+				//m_hFuncTank->StartControl( GetOuter() );
 				GetOuter()->ClearEnemyMemory();
 				m_bMounted = true;
 				TaskComplete();
@@ -445,22 +445,22 @@ void CAI_FuncTankBehavior::RunTask( const Task_t *pTask )
 				TaskComplete();
 			}
 
-			if ( m_hFuncTank->NPC_HasEnemy() )
-			{
-				GetOuter()->SetLastAttackTime( gpGlobals->curtime );
-				m_hFuncTank->NPC_Fire();
+			//if ( m_hFuncTank->NPC_HasEnemy() )
+			//{
+			//	GetOuter()->SetLastAttackTime( gpGlobals->curtime );
+			//	//m_hFuncTank->NPC_Fire();
 
-				// The NPC may have decided to stop using the func_tank, because it's out of ammo.
-				if ( !m_hFuncTank )
-				{
-					TaskComplete();
-					break;
-				}
-			}
-			else
-			{
-				TaskComplete();
-			}
+			//	// The NPC may have decided to stop using the func_tank, because it's out of ammo.
+			//	if ( !m_hFuncTank )
+			//	{
+			//		TaskComplete();
+			//		break;
+			//	}
+			//}
+			//else
+			//{
+			//	TaskComplete();
+			//}
 			
 			Assert( m_hFuncTank );
 
@@ -482,7 +482,7 @@ void CAI_FuncTankBehavior::RunTask( const Task_t *pTask )
 		}
 	case TASK_FORGET_ABOUT_FUNCTANK:
 		{
-			m_hFuncTank->NPC_InterruptRoute();
+			//m_hFuncTank->NPC_InterruptRoute();
 			SetBusy( gpGlobals->curtime + AI_FUNCTANK_BEHAVIOR_BUSYTIME );
 			TaskComplete();
 			break;
@@ -629,11 +629,11 @@ CBaseEntity *CAI_FuncTankBehavior::BestEnemy( void )
 		bUnreachable = pNPC->IsUnreachable( pEnemy );
 
 		// Check view cone of the view tank here.
-		bUnreachable = !m_hFuncTank->IsEntityInViewCone( pEnemy );
+		//bUnreachable = !m_hFuncTank->IsEntityInViewCone( pEnemy );
 		if ( !bUnreachable )
 		{
 			// It's in the viewcone. Now make sure we have LOS to it.
-			bUnreachable = !m_hFuncTank->HasLOSTo( pEnemy );
+			//bUnreachable = !m_hFuncTank->HasLOSTo( pEnemy );
 		}
 
 		// If best is reachable and current is unreachable, skip the unreachable enemy regardless of priority

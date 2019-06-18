@@ -117,22 +117,6 @@ AngularImpulse Pickup_PhysGunLaunchAngularImpulse( CBaseEntity *pObject, PhysGun
 
 Vector Pickup_DefaultPhysGunLaunchVelocity( const Vector &vecForward, float flMass )
 {
-#ifdef HL2_DLL
-	// Calculate the velocity based on physcannon rules
-	float flForceMax = physcannon_maxforce.GetFloat();
-	float flForce = flForceMax;
-
-	float mass = flMass;
-	if ( mass > 100 )
-	{
-		mass = MIN( mass, 1000 );
-		float flForceMin = physcannon_minforce.GetFloat();
-		flForce = SimpleSplineRemapValClamped( mass, 100, 600, flForceMax, flForceMin );
-	}
-
-	return ( vecForward * flForce );
-#endif
-
 	// Do the simple calculation
 	return ( vecForward * flMass );
 }

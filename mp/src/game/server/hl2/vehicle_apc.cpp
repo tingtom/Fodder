@@ -171,10 +171,10 @@ void CPropAPC::Spawn( void )
 void CPropAPC::CreateAPCLaserDot( void )
 {
 	// Create a laser if we don't have one
-	if ( m_hLaserDot == NULL )
-	{
-		m_hLaserDot = CreateLaserDot( GetAbsOrigin(), this, false );
-	}
+	//if ( m_hLaserDot == NULL )
+	//{
+		//m_hLaserDot = CreateLaserDot( GetAbsOrigin(), this, false );
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -680,14 +680,14 @@ void CPropAPC::AimSecondaryWeaponAt( CBaseEntity *pTarget )
 	m_hRocketTarget = pTarget;
 
 	// Update the rocket target
-	CreateAPCLaserDot();
+	//CreateAPCLaserDot();
 
 	if ( m_hRocketTarget )
 	{
 		m_hLaserDot->SetAbsOrigin( m_hRocketTarget->BodyTarget( WorldSpaceCenter(), false ) );
 	}
-	SetLaserDotTarget( m_hLaserDot, m_hRocketTarget );
-	EnableLaserDot( m_hLaserDot, m_hRocketTarget != NULL );
+	//SetLaserDotTarget( m_hLaserDot, m_hRocketTarget );
+	//EnableLaserDot( m_hLaserDot, m_hRocketTarget != NULL );
 }
 
 	
@@ -941,15 +941,15 @@ void CPropAPC::FireDying( )
 	QAngle angles;
 	VectorAngles( vecDir, angles );
 
-	CAPCMissile *pRocket = (CAPCMissile *) CAPCMissile::Create( vecRocketOrigin, angles, vecVelocity, this );
-	float flDeathTime = random->RandomFloat( 0.3f, 0.5f );
+	//CAPCMissile *pRocket = (CAPCMissile *) CAPCMissile::Create( vecRocketOrigin, angles, vecVelocity, this );
+//	float flDeathTime = random->RandomFloat( 0.3f, 0.5f );
 	if ( random->RandomFloat( 0.0f, 1.0f ) < 0.3f )
 	{
-		pRocket->ExplodeDelay( flDeathTime );
+		//pRocket->ExplodeDelay( flDeathTime );
 	}
 	else
 	{
-		pRocket->AugerDelay( flDeathTime );
+		//pRocket->AugerDelay( flDeathTime );
 	}
 
 	// Make erratic firing
@@ -1008,17 +1008,17 @@ void CPropAPC::FireRocket( void )
 	QAngle angles;
 	VectorAngles( vecDir, angles );
 
-	CAPCMissile *pRocket = (CAPCMissile *)CAPCMissile::Create( vecRocketOrigin, angles, vecVelocity, this );
-	pRocket->IgniteDelay();
+//	CAPCMissile *pRocket = (CAPCMissile *)CAPCMissile::Create( vecRocketOrigin, angles, vecVelocity, this );
+	//pRocket->IgniteDelay();
 
 	if ( m_hSpecificRocketTarget )
 	{
-		pRocket->AimAtSpecificTarget( m_hSpecificRocketTarget );
+		//pRocket->AimAtSpecificTarget( m_hSpecificRocketTarget );
 		m_hSpecificRocketTarget = NULL;
 	}
 	else if ( m_strMissileHint != NULL_STRING )
 	{
-		pRocket->SetGuidanceHint( STRING( m_strMissileHint ) );
+		//pRocket->SetGuidanceHint( STRING( m_strMissileHint ) );
 	}
 
 	EmitSound( "PropAPC.FireRocket" );

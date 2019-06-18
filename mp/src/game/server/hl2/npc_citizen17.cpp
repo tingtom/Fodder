@@ -239,17 +239,6 @@ END_DATADESC()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-class CMattsPipe : public CWeaponCrowbar
-{
-	DECLARE_CLASS( CMattsPipe, CWeaponCrowbar );
-
-	const char *GetWorldModel() const	{ return "models/props_canal/mattpipe.mdl"; }
-	void SetPickupTouch( void )	{	/* do nothing */ }
-};
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
 //---------------------------------------------------------
 // Citizen models
 //---------------------------------------------------------
@@ -508,13 +497,6 @@ void CNPC_Citizen::Spawn()
 
 	m_flNextHealthSearchTime = gpGlobals->curtime;
 
-	CWeaponRPG *pRPG = dynamic_cast<CWeaponRPG*>(GetActiveWeapon());
-	if ( pRPG )
-	{
-		CapabilitiesRemove( bits_CAP_USE_SHOT_REGULATOR );
-		pRPG->StopGuiding();
-	}
-
 	m_flTimePlayerStare = FLT_MAX;
 
 	AddEFlags( EFL_NO_DISSOLVE | EFL_NO_MEGAPHYSCANNON_RAGDOLL | EFL_NO_PHYSCANNON_INTERACTION );
@@ -750,22 +732,6 @@ void CNPC_Citizen::SelectExpressionType()
 //-----------------------------------------------------------------------------
 void CNPC_Citizen::FixupMattWeapon()
 {
-	CBaseCombatWeapon *pWeapon = GetActiveWeapon();
-	if ( pWeapon && pWeapon->ClassMatches( "weapon_crowbar" ) && NameMatches( "matt" ) )
-	{
-		Weapon_Drop( pWeapon );
-		UTIL_Remove( pWeapon );
-		pWeapon = (CBaseCombatWeapon *)CREATE_UNSAVED_ENTITY( CMattsPipe, "weapon_crowbar" );
-		pWeapon->SetName( AllocPooledString( "matt_weapon" ) );
-		DispatchSpawn( pWeapon );
-
-#ifdef DEBUG
-		extern bool g_bReceivedChainedActivate;
-		g_bReceivedChainedActivate = false;
-#endif
-		pWeapon->Activate();
-		Weapon_Equip( pWeapon );
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -1172,13 +1138,6 @@ int CNPC_Citizen::SelectSchedule()
 		// to something else, and now we need to figure out a better system.
 		Assert( GetMoveParent() && FClassnameIs( GetMoveParent(), "func_tracktrain" ) );
 		return SCHED_CITIZEN_SIT_ON_TRAIN;
-	}
-
-	CWeaponRPG *pRPG = dynamic_cast<CWeaponRPG*>(GetActiveWeapon());
-	if ( pRPG && pRPG->IsGuiding() )
-	{
-		DevMsg( "Citizen in select schedule but RPG is guiding?\n");
-		pRPG->StopGuiding();
 	}
 	
 	return BaseClass::SelectSchedule();
@@ -1725,84 +1684,6 @@ void CNPC_Citizen::RunTask( const Task_t *pTask )
 #endif
 
 		case TASK_CIT_RPG_AUGER:
-			{
-				// Keep augering until the RPG has been destroyed
-				CWeaponRPG *pRPG = dynamic_cast<CWeaponRPG*>(GetActiveWeapon());
-				if ( !pRPG )
-				{
-					TaskFail( FAIL_ITEM_NO_FIND );
-					return;
-				}
-
-				// Has the RPG detonated?
-				if ( !pRPG->GetMissile() )
-				{
-					pRPG->StopGuiding();
-					TaskComplete();
-					return;
-				}
-
-				Vector vecLaserPos = pRPG->GetNPCLaserPosition();
-
-				if ( !m_bRPGAvoidPlayer )
-				{
-					// Abort if we've lost our enemy
-					if ( !GetEnemy() )
-					{
-						pRPG->StopGuiding();
-						TaskFail( FAIL_NO_ENEMY );
-						return;
-					}
-
-					// Is our enemy occluded?
-					if ( HasCondition( COND_ENEMY_OCCLUDED ) )
-					{
-						// Turn off the laserdot, but don't stop augering
-						pRPG->StopGuiding();
-						return;
-					}
-					else if ( pRPG->IsGuiding() == false )
-					{
-						pRPG->StartGuiding();
-					}
-
-					Vector vecEnemyPos = GetEnemy()->BodyTarget(GetAbsOrigin(), false);
-					CBasePlayer *pPlayer = AI_GetSinglePlayer();
-					if ( pPlayer && ( ( vecEnemyPos - pPlayer->GetAbsOrigin() ).LengthSqr() < RPG_SAFE_DISTANCE * RPG_SAFE_DISTANCE ) )
-					{
-						m_bRPGAvoidPlayer = true;
-						Speak( TLK_WATCHOUT );
-					}
-					else
-					{
-						// Pull the laserdot towards the target
-						Vector vecToTarget = (vecEnemyPos - vecLaserPos);
-						float distToMove = VectorNormalize( vecToTarget );
-						if ( distToMove > 90 )
-							distToMove = 90;
-						vecLaserPos += vecToTarget * distToMove;
-					}
-				}
-
-				if ( m_bRPGAvoidPlayer )
-				{
-					// Pull the laserdot up
-					vecLaserPos.z += 90;
-				}
-
-				if ( IsWaitFinished() )
-				{
-					pRPG->StopGuiding();
-					TaskFail( FAIL_NO_SHOOT );
-					return;
-				}
-				// Add imprecision to avoid obvious robotic perfection stationary targets
-				float imprecision = 18*sin(gpGlobals->curtime);
-				vecLaserPos.x += imprecision;
-				vecLaserPos.y += imprecision;
-				vecLaserPos.z += imprecision;
-				pRPG->UpdateNPCLaserPosition( vecLaserPos );
-			}
 			break;
 
 		default:
@@ -2133,14 +2014,14 @@ Vector CNPC_Citizen::GetActualShootPosition( const Vector &shootOrigin )
 				// If we can see the point, it's a clear shot
 				if ( tr.fraction == 1.0 && tr.m_pEnt != GetEnemy() )
 				{
-					pRPG->SetNPCLaserPosition( vecTest );
+					//pRPG->SetNPCLaserPosition( vecTest );
 					return vecTest;
 				}
 			}
 		}
 		else
 		{
-			pRPG->SetNPCLaserPosition( vecTarget );
+			//pRPG->SetNPCLaserPosition( vecTarget );
 		}
 
 	}

@@ -245,7 +245,7 @@ void CTriggerWeaponDissolve::DissolveThink( void )
 				CreateBeam( m_pConduitPoints[i]->GetAbsOrigin(), pWeapon, 4.0f );
 			}
 
-			PhysCannonBeginUpgrade( pWeapon );
+			//PhysCannonBeginUpgrade( pWeapon );
 			m_OnChargingPhyscannon.FireOutput( this, this );
 
 			EmitSound( "WeaponDissolve.Beam" );
@@ -460,7 +460,7 @@ void CTriggerPhysicsTrap::Touch( CBaseEntity *pOther )
 	// HACK: Upgrade the physcannon
 	if ( FClassnameIs( pAnim, "weapon_physcannon" ) )
 	{
-		PhysCannonBeginUpgrade( pAnim );
+		//PhysCannonBeginUpgrade( pAnim );
 		return;
 	}
 #endif
