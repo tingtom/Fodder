@@ -114,8 +114,6 @@ public:
 	virtual Vector		EyeDirection2D( void );
 	virtual Vector		EyeDirection3D( void );
 
-	virtual void		CommanderMode();
-
 	virtual bool		ClientCommand( const CCommand &args );
 
 	// from cbasecombatcharacter
@@ -153,13 +151,7 @@ public:
 		CC_SEND,
 	};
 
-	void CommanderUpdate();
-	void CommanderExecute( CommanderCommand_t command = CC_TOGGLE );
-	bool CommanderFindGoal( commandgoal_t *pGoal );
 	void NotifyFriendsOfDamage( CBaseEntity *pAttackerEntity );
-	CAI_BaseNPC *GetSquadCommandRepresentative();
-	int GetNumSquadCommandables();
-	int GetNumSquadCommandableMedics();
 
 	// Locator
 	void UpdateLocatorPosition( const Vector &vecPosition );
@@ -212,7 +204,6 @@ public:
 
 	void				SetLocatorTargetEntity( CBaseEntity *pEntity ) { m_hLocatorTargetEntity.Set( pEntity ); }
 
-	virtual int			GiveAmmo( int nCount, int nAmmoIndex, bool bSuppressSound);
 	virtual bool		BumpWeapon( CBaseCombatWeapon *pWeapon );
 	
 	virtual bool		Weapon_CanUse( CBaseCombatWeapon *pWeapon );
