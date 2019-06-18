@@ -1144,6 +1144,12 @@ void CHL2_Player::Spawn(void)
 	SetFlashlightPowerDrainScale( 1.0f );
 }
 
+void CHL2_Player::Equip()
+{
+	EquipSuit();
+	GiveNamedItem( "weapon_pistol" );
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 void CHL2_Player::UpdateLocatorPosition( const Vector &vecPosition )

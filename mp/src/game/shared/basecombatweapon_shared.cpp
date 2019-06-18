@@ -807,6 +807,20 @@ void CBaseCombatWeapon::GiveTo( CBaseEntity *pOther )
 void CBaseCombatWeapon::DefaultTouch( CBaseEntity *pOther )
 {
 #if !defined( CLIENT_DLL )
+	// if it's not a player, ignore
+	CBasePlayer *pPlayer = ToBasePlayer(pOther);
+	if ( !pPlayer )
+		return;
+
+	if( strcmp( GetName(), "weapon_pistol" ) == 0 )
+	{
+		if( pPlayer->BumpWeapon(this) )
+		{
+			OnPickedUp( pPlayer );
+		}
+	}
+#endif
+
 	// Can't pick up dissolving weapons
 	if ( IsDissolving() )
 		return;
